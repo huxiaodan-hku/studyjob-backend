@@ -26,6 +26,8 @@ public class JwtTokenProvider {
 
     //生成jwt token
     public String generateToken(Authentication authentication){
+
+        //这个是根据用户的账号密码生成的。
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         Date now = new Date();

@@ -2,8 +2,10 @@ package com.example.redistemplate.config.security;
 
 import com.example.redistemplate.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,13 +17,14 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserPrincipal implements UserDetails {
     private long id;
     private String name;
-    private String username;
 
     @JsonIgnore
-    private String email;
+    private String username;
 
     @JsonIgnore
     private String password;
@@ -62,7 +65,7 @@ public class UserPrincipal implements UserDetails {
                 new SimpleGrantedAuthority(role.getRoleName().name())
         ).collect(Collectors.toList());
 
-        return UserPrincipal.builder().username(user.getUsername()).authorities(authorities)
+        return UserPrincipal.builder().id(user.getUserId()).username(user.getUsername()).authorities(authorities)
                 .password(user.getPassword()).build();
 
     }

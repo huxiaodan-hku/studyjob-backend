@@ -17,5 +17,6 @@ public class User implements Serializable {
     public String username;
     public String password;
     private Set<Role> roles = new HashSet<>();
-    public String name;
+    public String lastName;
+    public String firstName;
 }
