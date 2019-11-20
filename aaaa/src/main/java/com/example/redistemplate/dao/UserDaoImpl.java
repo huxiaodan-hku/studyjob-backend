@@ -18,6 +18,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findByUsername(String username) {
         Map<String, String> user = jedis.hgetAll("user:" + username);
+        if(Objects.isNull(user) || user.size() == 0){
+            return null;
+        }
         Set<Role> roles = new HashSet<>();
         roles.add(Role.builder().roleName(RoleName.ROLE_ADMIN).build());
         return User.builder().roles((roles)).lastName(user.get("lastName")).firstName(user.get("firstName"))

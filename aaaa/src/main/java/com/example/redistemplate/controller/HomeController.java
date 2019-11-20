@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Objects;
+
 @Controller
 public class HomeController {
 
@@ -21,6 +23,9 @@ public class HomeController {
     @PostMapping("/userInfo")
     public UserInfoVo userInfo(@RequestBody UserInfoRequestVo userInfoRequest) {
         User user = userDao.findByUsername(userInfoRequest.getUsername());
+        if(Objects.isNull(user)){
+            return null;
+        }
         return UserInfoVo.builder().userName(user.getLastName()).build();
     }
 }
