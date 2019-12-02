@@ -1,51 +1,50 @@
 package com.example.redistemplate.dao;
 
-import com.example.redistemplate.constant.JedisConstant;
-import com.example.redistemplate.dao.spec.GroupDao;
+
+import com.example.redistemplate.contants.JedisConstants;
 import com.example.redistemplate.entities.GroupDto;
+import com.example.redistemplate.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
 
-@Repository
+
+@Service
 public class GroupDaoImpl implements GroupDao {
 
-    private static final String GROUP_ID = "groupId";
-    private static final String GROUP_NAME = "groupName";
-    private static final String CREATE_TIME = "createTime";
+    private static final String FIELD_GROUP_NAME = "groupName";
+    private static final String FIELD_GROUP_ID = "groupId";
+    private static final String FIELD_CREATE_TIME = "createTime";
 
     @Autowired
     private Jedis jedis;
 
-    @Override
-    public boolean createGroup(GroupDto groupDto){
-        long groupId = groupDto.getGroupId();
-        String groupHashKey = groupHashKey(groupId);
-        //save group  hash
-        jedis.hset(groupHashKey,GROUP_ID,String.valueOf(groupId));
-        jedis.hset(groupHashKey,GROUP_NAME,groupDto.getGroupName());
-        jedis.hset(groupHashKey,CREATE_TIME,groupDto.getCreateTime());
-        List<String> members = groupDto.getMembers();
-        for(int i = 0;i<members.size();i++){
-            jedis.sadd(membersKey(groupId),members.get(i));
-        }
-        //save members
-        return true;
+
+    @Override public GroupDto saveGroup(List<String> users, String groupName) {
+        long newGroupId = generateNewGroupId();
+        String key = getGroupHashKey(newGroupId);
+        jedis.hset(key, FIELD_GROUP_NAME, groupName);
+        jedis.hset(key, FIELD_GROUP_ID, String.valueOf(newGroupId));
+        String currentTime = TimeUtils.getCurrentTime();
+        jedis.hset(key, FIELD_CREATE_TIME, currentTime);
+        String membersHashKey = getMembersHashKey(newGroupId);
+        users.stream().forEach(user -> jedis.sadd(membersHashKey, user));
+        return GroupDto.builder().groupId(newGroupId).groupName(groupName).createTime(currentTime).members(users)
+                .build();
+
     }
 
-    @Override
-    public long generateGroupId() {
-        return jedis.incr(JedisConstant.GROUP_ID_COUNT);
+    private String getMembersHashKey(long newGroupId) {
+        return JedisConstants.MEMBERS_HASHKEY_PREFIX + newGroupId;
     }
 
-    private String groupHashKey(long groupId){
-        return JedisConstant.GROUP_HASHKEY_PREFIX +groupId;
+    private String getGroupHashKey(long groupId) {
+        return JedisConstants.GROUP_HASHKEY_PREFIX + groupId;
     }
 
-    private String membersKey(long groupId){
-        return JedisConstant.MEMBER_HASHKEY_PREFIX +groupId;
+    private long generateNewGroupId() {
+        return jedis.incr(JedisConstants.GROUP_ID);
     }
-
 }

@@ -5,12 +5,12 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
+
 @Builder
+@Data
 public class GroupBo {
     private long groupId;
-    private String groupName;
     private List<String> members;
+    private String groupName;
     private String createTime;
-
 }

@@ -5,5 +5,6 @@ import com.example.redistemplate.service.bo.GroupBo;
 import java.util.List;
 
 public interface GroupService {
-    GroupBo createGroup(String groupName, List<String> members);
+
+    public GroupBo createGroup(List<String> users, String groupName);
 }

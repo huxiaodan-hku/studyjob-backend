@@ -12,8 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupRequestVo {
-    private List<String> members;
-    private String groupName;
-    //当前登录的用户。
-//    private String userId;
+
+    String groupName;
+    List<String> members;
 }

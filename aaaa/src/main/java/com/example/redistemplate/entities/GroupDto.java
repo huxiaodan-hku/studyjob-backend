@@ -8,8 +8,9 @@ import java.util.List;
 @Data
 @Builder
 public class GroupDto {
-   private long groupId;
-   private String groupName;
-   private List<String> members;
-   private String createTime;
+
+    private long groupId;
+    private List<String> members;
+    private String groupName;
+    private String createTime;
 }
