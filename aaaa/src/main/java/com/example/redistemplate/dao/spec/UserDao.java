@@ -1,4 +1,4 @@
-package com.example.redistemplate.dao;
+package com.example.redistemplate.dao.spec;
 
 import com.example.redistemplate.entities.User;
 

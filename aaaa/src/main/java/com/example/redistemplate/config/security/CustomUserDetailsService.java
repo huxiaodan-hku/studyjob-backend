@@ -1,6 +1,6 @@
 package com.example.redistemplate.config.security;
 
-import com.example.redistemplate.dao.UserDao;
+import com.example.redistemplate.dao.spec.UserDao;
 import com.example.redistemplate.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

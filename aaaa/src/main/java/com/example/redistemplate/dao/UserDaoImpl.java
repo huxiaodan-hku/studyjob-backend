@@ -1,5 +1,6 @@
 package com.example.redistemplate.dao;
 
+import com.example.redistemplate.dao.spec.UserDao;
 import com.example.redistemplate.entities.Role;
 import com.example.redistemplate.entities.RoleName;
 import com.example.redistemplate.entities.User;
@@ -31,13 +32,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void createNewUser(User user) {
-        Map<String, String> userMap = new HashMap<>();
-        userMap.put("username", user.getUsername());
-        userMap.put("password", user.getPassword());
-        userMap.put("id", String.valueOf(jedis.incr("userCount")));
-        userMap.put("lastName", user.getLastName());
-        userMap.put("firstName", user.getFirstName());
-        jedis.hset("user:" + user.getUsername(), userMap);
+        jedis.hset("user:" + user.getUsername(), "username", user.getUsername());
+        jedis.hset("user:" + user.getUsername(), "password", user.getPassword());
+        jedis.hset("user:" + user.getUsername(), "id", String.valueOf(jedis.incr("userCount")));
+        jedis.hset("user:" + user.getUsername(), "lastName", user.getLastName());
+        jedis.hset("user:" + user.getUsername(), "firstName", user.getFirstName());
     }
 
     @Override
