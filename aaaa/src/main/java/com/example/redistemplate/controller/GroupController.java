@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import java.util.Objects;
-
 @Controller
 public class GroupController {
     @Autowired
@@ -23,6 +20,6 @@ public class GroupController {
     @PostMapping("/createGroup")
     public GroupVo userInfo(@RequestBody GroupRequestVo groupRequestVo) {
         GroupBo bo = service.createGroup(groupRequestVo.getMembers(), groupRequestVo.getGroupName());
-        return GroupVo.builder().groupId(bo.getGroupId()).build();
+        return GroupVo.builder().id(bo.getGroupId()).build();
     }
 }

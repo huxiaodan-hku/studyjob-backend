@@ -11,5 +11,5 @@ public interface WorkSpaceDao {
     long generateNewWorkSpaceId();
     void addWorkSpaceMember(long id, String userAccount);
     void addWorkSpaceMembers(long id, List<String> userAccount);
-    List<String> getWorkSpaceMembers(long workspaceId)
+    List<String> getWorkSpaceMembers(long workspaceId);
 }

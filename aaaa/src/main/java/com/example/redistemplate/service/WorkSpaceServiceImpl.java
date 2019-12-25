@@ -15,5 +15,6 @@ public class WorkSpaceServiceImpl implements WorkSpaceService {
         long id = workSpaceDao.generateNewWorkSpaceId();
         WorkSpace workSpace = WorkSpace.builder().id(id).creator(creator).userAccounts(new ArrayList<>()).build();
         workSpaceDao.saveWorkSpace(workSpace);
+        return workSpace;
     }
 }
