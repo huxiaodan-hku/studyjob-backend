@@ -2,9 +2,12 @@ package com.example.redistemplate.dao;
 
 import com.example.redistemplate.dao.spec.WorkSpaceDao;
 import com.example.redistemplate.entities.WorkSpace;
+import com.example.redistemplate.service.bo.WorkSpaceSearchBo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,15 @@ public class WorkSpaceDaoImpl implements WorkSpaceDao {
     public List<Long> getWorkSpaceList(String userAccount) {
         return jedis.smembers(generateWorkSpaceListHashKey(userAccount)).stream().map(
                 id -> Long.parseLong(id)).collect(Collectors.toList());
+    }
+
+    @Override
+    public WorkSpaceSearchBo searchAllWorkspaceIds(String token, String cursor, int limit){
+        ScanParams scanParams = new ScanParams();
+        scanParams.match(WORKSPACE+"*");
+        scanParams.count(limit);
+        ScanResult<String> scan = jedis.scan(cursor, scanParams);
+        return WorkSpaceSearchBo.builder().workspace(scan.getResult()).cursor(scan.getCursor()).build();
     }
 
     @Override
@@ -71,4 +83,15 @@ public class WorkSpaceDaoImpl implements WorkSpaceDao {
     private String generateWorkSpaceMembersHashKey(long workSpaceId) {
         return WORKSPACE + MEMBERS + workSpaceId;
     }
+
+    private void test(){
+        List<Integer> list = new ArrayList<>();
+    }
+    @Override
+    public long getIdFromHashKey(String hashKey){
+        return Long.parseLong(hashKey.replace(WORKSPACE, ""));
+    }
 }
+
+
+

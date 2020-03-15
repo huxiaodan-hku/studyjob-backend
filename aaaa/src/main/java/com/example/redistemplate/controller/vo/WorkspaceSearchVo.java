@@ -1,0 +1,15 @@
+package com.example.redistemplate.controller.vo;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class WorkspaceSearchVo {
+    String token;
+    String cursor;
+}

@@ -8,7 +8,7 @@ public class RedistemplateApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(RedistemplateApplication.class, args
-        );
+        );   
     }
 
 

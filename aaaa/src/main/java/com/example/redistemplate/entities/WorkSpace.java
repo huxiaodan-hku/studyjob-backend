@@ -13,4 +13,5 @@ public class WorkSpace {
     long id;
     String creator;
     List<String> userAccounts;
+    String name;
 }
